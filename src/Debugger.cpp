@@ -20,9 +20,9 @@ class Debugger {
     private:
         std::string program_name;
         pid_t pid;
-        CommandHandlerFactory commandHandlerFactory;
+        CommandHandlerFactory* commandHandlerFactory;
         
-        CommandHandlerFactory initCommandHandlerFactory();
+        CommandHandlerFactory* initCommandHandlerFactory();
         void handleCommand(char* command);
         void continue_execution();
 };
@@ -41,11 +41,11 @@ void Debugger::run(){
     }
 }
 
-CommandHandlerFactory Debugger::initCommandHandlerFactory(){
-    CommandHandler** handlers = new CommandHandler*[1];
+CommandHandlerFactory* Debugger::initCommandHandlerFactory(){
+    std::vector<CommandHandler*> handlers(1);
     ContinueCommandHandler* contHandler = new ContinueCommandHandler();
     handlers[0] = contHandler;
-
+    return new CommandHandlerFactory(handlers);
 }
 
 void Debugger::handleCommand(char* line){

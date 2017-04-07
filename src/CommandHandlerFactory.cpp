@@ -2,13 +2,18 @@
 
 #include <string>
 #include "CommandHandlers/CommandHandler.cpp"
+#include <vector>
 
 class CommandHandlerFactory {
     public:
-        CommandHandlerFactory(CommandHandler* handlers)
+        CommandHandlerFactory(std::vector<CommandHandler*> handlers)
             : commandHandlers(handlers) {}
         CommandHandler* getHandler(std::string command);
 
     private:
-        CommandHandler* commandHandlers;
+        std::vector<CommandHandler*> commandHandlers;
 };
+
+CommandHandler* CommandHandlerFactory::getHandler(std::string command){
+    
+}
