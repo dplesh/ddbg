@@ -20,7 +20,16 @@
         "type_traits": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "cstring": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "ostream": "cpp",
+        "stdexcept": "cpp",
+        "streambuf": "cpp",
+        "system_error": "cpp"
     },
     // Controls if quick suggestions should show up while typing
     "editor.quickSuggestions": true,
