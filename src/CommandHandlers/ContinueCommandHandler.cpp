@@ -4,13 +4,14 @@
 #include "../stringExt.cpp"
 #include <cstdint>
 #include <stdint.h>
+#include "../ProgramInfo.cpp"
 
 class ContinueCommandHandler : public CommandHandler {
     public:
         ContinueCommandHandler();
         bool isCommandCompatible(std::string command);
         std::string getCompatibleCommand();
-        void handle(std::string command, void** params);
+        void handle(ProgramInfo* programInfo, std::vector<std::string> params);
     
     private:
         std::string t_compatibleCommand;        
@@ -30,12 +31,14 @@ bool ContinueCommandHandler::isCommandCompatible(std::string command){
     return is_prefix(command, t_compatibleCommand);
 }
 
-void ContinueCommandHandler::handle(std::string command, void** params){
+void ContinueCommandHandler::handle(ProgramInfo* programInfo, std::vector<std::string> params){
+    std::string command = params[0];
+    
     if (!isCommandCompatible(command)){
         throw "Command " + command + "is not compatible with ContinueCommandHandler";
     }
-    intptr_t castedParams = (intptr_t) params[0];
-    int pid = castedParams;
+    
+    int pid = programInfo->pid;
 
     ptrace(PTRACE_CONT, pid, nullptr, nullptr);
 

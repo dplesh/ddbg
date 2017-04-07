@@ -9,29 +9,28 @@
 #include "CommandHandlers/CommandHandler.cpp"
 #include "CommandHandlers/ContinueCommandHandler.cpp"
 #include "stringExt.cpp"
-
+#include "ProgramInfo.cpp"
 
 class Debugger {
     public:
-        Debugger(std::string programName, pid_t processId)
-            : program_name{std::move(programName)}, pid(processId), commandHandlerFactory{initCommandHandlerFactory()} {}
+        Debugger(std::string program_name, pid_t processId)
+            : programInfo{initProgramInfo(program_name, processId)}, commandHandlerFactory{initCommandHandlerFactory()} {}
         void run();
 
     private:
-        std::string program_name;
-        pid_t pid;
+        ProgramInfo programInfo;
         CommandHandlerFactory* commandHandlerFactory;
         
         CommandHandlerFactory* initCommandHandlerFactory();
         void handleCommand(char* command);
-        void continue_execution();
+        static ProgramInfo initProgramInfo(std::string program_name, pid_t proccessId);
 };
 
 
 void Debugger::run(){
     int wait_status;
     int options = 0;
-    waitpid(pid, &wait_status, options);
+    waitpid(programInfo.pid, &wait_status, options);
     
     char* line = NULL;
     while ((line = linenoise("ddbg> ")) != nullptr){
@@ -39,6 +38,11 @@ void Debugger::run(){
         linenoiseHistoryAdd(line);
         //linenoiseFree(line);
     }
+}
+
+ProgramInfo Debugger::initProgramInfo(std::string program_name, pid_t processId){
+    ProgramInfo programInfo = {program_name, processId};
+    return programInfo;
 }
 
 CommandHandlerFactory* Debugger::initCommandHandlerFactory(){
@@ -52,16 +56,15 @@ void Debugger::handleCommand(char* line){
     auto args = split(line, ' ');
     auto command = args[0];
     
-    if (is_prefix(command, "continue")) {
-        continue_execution();
-    }   
-    else {
+    CommandHandler* compatibleHandler = commandHandlerFactory->getHandler(command);
+    if (compatibleHandler == nullptr) {
         std::cerr << "Unknown command\n";
+        return;
     }
-}
-
-void Debugger::continue_execution(){
-    return;
+    std::cout << "Handler found!\n";
+    
+    //compatibleHandler->handle( args);
+    
 }
 
 

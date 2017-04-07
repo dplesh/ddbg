@@ -15,5 +15,10 @@ class CommandHandlerFactory {
 };
 
 CommandHandler* CommandHandlerFactory::getHandler(std::string command){
-    
+    for (CommandHandler* handler : commandHandlers){
+        if (handler->isCommandCompatible(command)){
+            return handler;
+        }
+    }
+    return nullptr;
 }
