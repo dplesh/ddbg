@@ -61,10 +61,8 @@ void Debugger::handleCommand(char* line){
         std::cerr << "Unknown command\n";
         return;
     }
-    std::cout << "Handler found!\n";
     
-    //compatibleHandler->handle( args);
-    
+    compatibleHandler->handle(programInfo, args);
 }
 
 

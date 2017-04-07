@@ -11,7 +11,7 @@ class ContinueCommandHandler : public CommandHandler {
         ContinueCommandHandler();
         bool isCommandCompatible(std::string command);
         std::string getCompatibleCommand();
-        void handle(ProgramInfo* programInfo, std::vector<std::string> params);
+        void handle(const ProgramInfo programInfo, std::vector<std::string> params);
     
     private:
         std::string t_compatibleCommand;        
@@ -31,21 +31,18 @@ bool ContinueCommandHandler::isCommandCompatible(std::string command){
     return is_prefix(command, t_compatibleCommand);
 }
 
-void ContinueCommandHandler::handle(ProgramInfo* programInfo, std::vector<std::string> params){
+void ContinueCommandHandler::handle(const ProgramInfo programInfo, std::vector<std::string> params){
     std::string command = params[0];
     
     if (!isCommandCompatible(command)){
         throw "Command " + command + "is not compatible with ContinueCommandHandler";
     }
     
-    int pid = programInfo->pid;
+    int pid = programInfo.pid;
 
     ptrace(PTRACE_CONT, pid, nullptr, nullptr);
 
     int wait_status;
     auto options = 0;
     waitpid(pid, &wait_status, options);
-
-
-
 }

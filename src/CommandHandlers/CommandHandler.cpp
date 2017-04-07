@@ -7,5 +7,5 @@ class CommandHandler {
     public:
         virtual bool isCommandCompatible(std::string command) = 0;
         virtual std::string getCompatibleCommand() = 0;
-        virtual void handle(ProgramInfo* programInfo, std::vector<std::string> params) = 0;
+        virtual void handle(const ProgramInfo programInfo, std::vector<std::string> params) = 0;
 };
