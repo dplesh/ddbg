@@ -1,35 +1,19 @@
 #include <string>
-#include <algorithm>
-#include "CommandHandler.cpp"
-#include "../stringExt.cpp"
 #include <cstdint>
 #include <stdint.h>
+#include "CommandHandler.cpp"
 #include "../ProgramInfo.cpp"
 
 class ContinueCommandHandler : public CommandHandler {
     public:
-        ContinueCommandHandler();
-        bool isCommandCompatible(std::string command);
-        std::string getCompatibleCommand();
+        ContinueCommandHandler(std::vector<std::string>* compatibleCommands) 
+            : CommandHandler(compatibleCommands) {}
+        
+        ContinueCommandHandler(std::string command)
+            : CommandHandler(command) {}
+        
         void handle(const ProgramInfo programInfo, std::vector<std::string> params);
-    
-    private:
-        std::string t_compatibleCommand;        
 };
-
-ContinueCommandHandler::ContinueCommandHandler(){
-    t_compatibleCommand = "continue";
-}
-
-std::string ContinueCommandHandler::getCompatibleCommand(){
-    return t_compatibleCommand;
-}
-
-bool ContinueCommandHandler::isCommandCompatible(std::string command){
-    std::string loweredCommand = command;
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
-    return is_prefix(command, t_compatibleCommand);
-}
 
 void ContinueCommandHandler::handle(const ProgramInfo programInfo, std::vector<std::string> params){
     std::string command = params[0];

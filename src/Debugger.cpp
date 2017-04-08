@@ -8,8 +8,10 @@
 #include "CommandHandlerFactory.cpp"
 #include "CommandHandlers/CommandHandler.cpp"
 #include "CommandHandlers/ContinueCommandHandler.cpp"
+#include "CommandHandlers/BreakpointCommandHandler.cpp"
 #include "stringExt.cpp"
 #include "ProgramInfo.cpp"
+#include "Components/Breakpoint.cpp"
 
 class Debugger {
     public:
@@ -24,6 +26,7 @@ class Debugger {
         CommandHandlerFactory* initCommandHandlerFactory();
         void handleCommand(char* command);
         static ProgramInfo initProgramInfo(std::string program_name, pid_t proccessId);
+
 };
 
 
@@ -47,7 +50,7 @@ ProgramInfo Debugger::initProgramInfo(std::string program_name, pid_t processId)
 
 CommandHandlerFactory* Debugger::initCommandHandlerFactory(){
     std::vector<CommandHandler*> handlers(1);
-    ContinueCommandHandler* contHandler = new ContinueCommandHandler();
+    ContinueCommandHandler* contHandler = new ContinueCommandHandler("continue");
     handlers[0] = contHandler;
     return new CommandHandlerFactory(handlers);
 }

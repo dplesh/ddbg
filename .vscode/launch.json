@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/build/out/main.out",
-            "args": ["ls"],
+            "args": ["/home/dplesh/code/ddbg/hello.out"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
